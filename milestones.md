@@ -1,7 +1,7 @@
 # Cruise Ship KPI Analysis Milestones
 
 ## Repository Setup
-- [ ] Create a public GitHub repository.
+- [x] Create a public GitHub repository.
 - [ ] Add a clear project name and description in the repository.
 
 ## Data Exploration and Cleaning
