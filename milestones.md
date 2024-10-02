@@ -5,7 +5,7 @@
 - [ ] Add a clear project name and description in the repository.
 
 ## Data Exploration and Cleaning
-- [ ] Load and review the dataset.
+- [x] Load and review the dataset.
 - [ ] Handle missing or inconsistent data.
 - [ ] Ensure correct data types for each column.
 - [ ] Create summary statistics for key variables.

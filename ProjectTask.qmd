@@ -1,0 +1,87 @@
+---
+title: "Cruise Ships KPI Analysis"
+author: "Leona Hasani"
+date: "10.02.2024"
+format:
+  html:                     
+    standalone: true        
+    embed-resources: true   
+    code-fold: false        
+    number-sections: true  
+    toc: true 
+highlight-style: github 
+abstract: ""         
+---
+
+
+```{python}
+#| label: importing the libraries
+#| echo: false
+#| message: false
+#| include: false
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+```{python}
+#| label: importing the data
+#| echo: false
+#| message: false
+#| include: false
+
+
+data = pd.read_csv('task_data/data.csv', sep=",", header=0, index_col=False)
+```
+
+
+```{python}
+#| label: data head
+#| echo: false
+#| message: false
+#| include: false
+
+data.head()
+```
+
+
+```{python}
+#| label: data describe
+#| echo: false
+#| message: false
+#| include: false
+
+data.describe()
+```
+
+
+```{python}
+#| label: data nunique
+#| echo: false
+#| message: false
+#| include: false
+
+data.nunique
+```
+
+```{python}
+#| label: data info
+#| echo: false
+#| message: false
+#| include: false
+
+data.info()
+```
+
+```{python}
+#| label: data NAs
+#| echo: false
+#| message: false
+#| include: false
+
+data.isna().sum()
+```
+
+
