@@ -13,6 +13,7 @@ highlight-style: github
 abstract: ""         
 ---
 
+# Data Preparation
 
 ```{python}
 #| label: importing the libraries
@@ -24,6 +25,8 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import plotly.express as px
+from fancyimpute import IterativeImputer
 ```
 
 ```{python}
@@ -35,6 +38,7 @@ import matplotlib.pyplot as plt
 
 data = pd.read_csv('task_data/data.csv', sep=",", header=0, index_col=False)
 ```
+
 
 
 ```{python}
@@ -84,4 +88,320 @@ data.info()
 data.isna().sum()
 ```
 
+```{python}
 
+# Calculating the correlation matrix
+corr_matrix = data.corr()
+
+# Creating the correlation heatmap using plotly
+fig = px.imshow(corr_matrix, 
+                text_auto=True, 
+                aspect="auto", 
+                color_continuous_scale='Blues',
+                title="Correlation Heatmap")
+
+# Show the plot
+fig.show()
+```
+
+```{python}
+# Create a heatmap of missing values
+plt.figure(figsize=(12, 8))
+sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
+
+# Show the plot
+plt.title('Heatmap of Missing Values in the DataFrame')
+plt.show()
+```
+
+```{python}
+data = data.drop(columns=['Depth (m)'])
+```
+
+```{python}
+# Create a heatmap of missing values
+plt.figure(figsize=(12, 8))
+sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
+
+# Show the plot
+plt.title('Heatmap of Missing Values in the DataFrame')
+plt.show()
+```
+
+```{python}
+
+
+# Identify columns with missing values
+columns_with_na = data.columns[data.isnull().any()]
+
+# Initialize the MICE imputer
+mice_imputer = IterativeImputer()
+
+# Apply MICE only to the columns with missing values
+df_imputed = data.copy()  # Create a copy to keep the original DataFrame
+df_imputed[columns_with_na] = mice_imputer.fit_transform(data[columns_with_na])
+
+# Check the result
+print(df_imputed.isnull().sum())  # This should show 0 missing values for all columns with missing values
+
+
+```
+
+```{python}
+#plt.figure(figsize=(12, 8))
+#sns.heatmap(df_imputed.isnull(), cbar=False, cmap='viridis')
+
+# Show the plot
+#plt.title('Heatmap of Missing Values in the DataFrame')
+#plt.show()
+```
+
+```{python}
+#df_imputed.to_csv('task_data/df_imputed.csv', index=False)
+```
+
+```{python}
+df = pd.read_csv('task_data/df_imputed.csv', sep=",", header=0, index_col=False)
+```
+
+```{python}
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
+
+# Show the plot
+plt.title('Heatmap of Missing Values in the DataFrame')
+plt.show()
+
+```
+
+```{python}
+
+# Check for duplicates across all columns
+duplicate_rows = data[data.duplicated()]
+
+
+# Check how many duplicates exist
+print(f"Number of duplicate rows: {duplicate_rows.shape[0]}")
+```
+
+```{python}
+
+# Parse Start Time and End Time columns to datetime format
+df['Start Time'] = pd.to_datetime(df['Start Time'], format='%Y-%m-%dT%H:%M:%S')
+df['End Time'] = pd.to_datetime(df['End Time'], format='%Y-%m-%dT%H:%M:%S')
+
+# Create a new column to calculate the duration of each measurement interval in minutes
+df['Duration (Minutes)'] = (df['End Time'] - df['Start Time']).dt.total_seconds() / 60
+
+# Example of calculating total power consumption over each interval
+df['Total Power Consumption (MW)'] = (
+    df['Power Galley 1 (MW)'] + 
+    df['Power Galley 2 (MW)'] + 
+    df['Power Service (MW)'] + 
+    df['HVAC Chiller 1 Power (MW)'] + 
+    df['HVAC Chiller 2 Power (MW)'] + 
+    df['HVAC Chiller 3 Power (MW)'] + 
+    df['Scrubber Power (MW)'] + 
+    df['Diesel Generator 1 Power (MW)'] +
+    df['Diesel Generator 2 Power (MW)'] +
+    df['Diesel Generator 3 Power (MW)'] +
+    df['Diesel Generator 4 Power (MW)'] +
+    df['Propulsion Power (MW)'] + 
+    df['Port Side Propulsion Power (MW)'] + 
+    df['Starboard Side Propulsion Power (MW)'] + 
+    df['Bow Thruster 1 Power (MW)'] + 
+    df['Bow Thruster 2 Power (MW)'] + 
+    df['Bow Thruster 3 Power (MW)'] + 
+    df['Stern Thruster 1 Power (MW)'] + 
+    df['Stern Thruster 2 Power (MW)']
+)
+
+df['All Engines Fuel Flow Rate (kg/h)'] = (
+  df['Main Engine 1 Fuel Flow Rate (kg/h)'] +
+  df['Main Engine 2 Fuel Flow Rate (kg/h)'] +
+  df['Main Engine 3 Fuel Flow Rate (kg/h)'] +
+  df['Main Engine 4 Fuel Flow Rate (kg/h)']
+)
+
+df['All Boiler Fuel Flow Rate (L/h)'] = (
+  df['Boiler 1 Fuel Flow Rate (L/h)'] +
+  df['Boiler 2 Fuel Flow Rate (L/h)']
+)
+
+# Group by time intervals to analyze patterns
+#df.set_index('Start Time', inplace=True)
+
+```
+
+
+```{python}
+df.head()
+```
+
+
+
+```{python}
+
+
+# Extract the date from the Start Time column
+df['Date'] = df['Start Time'].dt.date
+
+# Group by both Date and Vessel Name, and then sum the numeric columns
+df_grouped_by_day_vessel = df.groupby(['Date', 'Vessel Name']).sum(numeric_only=True).reset_index()
+
+# Display the first few rows of the grouped DataFrame
+print(df_grouped_by_day_vessel.head())
+
+```
+
+
+```{python}
+df_grouped_by_day_vessel
+```
+
+
+
+```{python}
+print(df_grouped_by_day_vessel.columns)
+```
+```{python}
+# Define the columns you want to divide by 288
+columns_to_divide = ['Sea Temperature (Celsius)', 'Speed Over Ground (knots)', 'True Wind Speed (knots)', 'Relative Wind Speed (knots)', 'Speed Through Water (knots)']
+
+# Apply division by 288 for the specified columns
+df_grouped_by_day_vessel[columns_to_divide] = df_grouped_by_day_vessel[columns_to_divide].div(288)
+
+# Display the updated DataFrame
+print(df_grouped_by_day_vessel.head())
+
+```
+
+```{python}
+df_grouped_by_day_vessel.head()
+```
+
+```{python}
+# List of the columns I want to remove
+columns_to_remove = [
+    'Latitude (Degrees)',
+    'Longitude (Degrees)',
+    'Relative Wind Angle (Degrees)',
+    'True Wind Angle (Degrees)',
+    'Relative Wind Direction (Degrees)',
+    'True Wind Direction (Degrees)',
+    'Draft (m)',
+    'Local Time (h)',
+    'Trim (m)'
+]
+
+# Drop the columns you don't want
+new_df = df_grouped_by_day_vessel.drop(columns=columns_to_remove, axis=1)
+
+# Display the updated DataFrame
+new_df.head()
+
+```
+
+```{python}
+new_df
+```
+```{python}
+#| label: diving the day into parts
+#| echo: false
+#| message: true
+#| include: false
+#| eval: false 
+
+# Define the bins and labels with adjusted bin edges to avoid overlaps
+bins = [0, 5, 8, 11, 12, 15, 17, 19, 21, 24]
+labels = ['Night', 'Early Morning', 'Late Morning', 'Morning', 'Early Afternoon', 'Late Afternoon', 'Early Evening', 'Evening', 'Night']
+
+# Ensure 'Start Time' is in datetime format
+data['Start Time'] = pd.to_datetime(data['Start Time'])
+
+# Create a new column 'Hour' by extracting the hour from 'Start Time'
+data['Hour'] = data['Start Time'].dt.hour
+
+# Use pd.cut to categorize the parts of the day
+data['Part of Day'] = pd.cut(data['Hour'], bins=bins, labels=labels, right=False, include_lowest=True, ordered=False)
+
+# Extract the date from 'Start Time' for grouping
+data['Date'] = data['Start Time'].dt.date
+
+# Group by Date, Vessel Name, and Part of Day, then sum the numerical columns
+df_grouped_by_part_of_day = data.groupby(['Date', 'Vessel Name', 'Part of Day']).sum(numeric_only=True).reset_index()
+
+# Display the first few rows of the new DataFrame
+print(df_grouped_by_part_of_day.head())
+
+# Optionally, check how many unique combinations we have
+print(df_grouped_by_part_of_day[['Date', 'Vessel Name', 'Part of Day']].drop_duplicates().shape)
+
+```
+
+
+```{python}
+#| echo: false
+#| message: true
+#| include: false
+#| eval: false 
+df_grouped_by_part_of_day.info()
+```
+
+
+```{python}
+#| echo: false
+#| message: true
+#| include: false
+#| eval: false 
+df_grouped_by_part_of_day
+```
+
+# Descriptive Statistics
+
+```{python}
+df_grouped_by_day_vessel
+```
+
+
+
+
+
+# Performance Analysis
+
+## Efficiency Analysis
+
+## Power Generation
+
+# Propulsion Analysis
+
+## Propulsion Power
+
+## Speed Analysis
+
+## Trim and Draft
+
+# Environmental Factors
+
+## Impact of Sea Conditions
+
+# Comparative Analysis
+
+## Vessel Comparison
+
+## Performance Trends 
+
+# Key Performance Indicators
+
+## Energy Efficiency Ratio
+
+## Operational Efficiency
+
+# Visualization
+
+## Time Series Plots
+
+## Bar Charts: Compare power contributions from various sources (e.g., different generators)
+
+## Scatter Plots: Analyze relationships between variables (e.g., speed versus fuel consumption)

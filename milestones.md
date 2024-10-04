@@ -6,8 +6,8 @@
 
 ## Data Exploration and Cleaning
 - [x] Load and review the dataset.
-- [ ] Handle missing or inconsistent data.
-- [ ] Ensure correct data types for each column.
+- [x] Handle missing or inconsistent data.
+- [x] Ensure correct data types for each column.
 - [ ] Create summary statistics for key variables.
 
 ## Exploratory Data Analysis (EDA)
