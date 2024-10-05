@@ -8,18 +8,18 @@
 - [x] Load and review the dataset.
 - [x] Handle missing or inconsistent data.
 - [x] Ensure correct data types for each column.
-- [ ] Create summary statistics for key variables.
+- [x] Create summary statistics for key variables.
 
 ## Exploratory Data Analysis (EDA)
-- [ ] Visualize power consumption across different areas (e.g., propulsion, service areas).
-- [ ] Analyze correlations between variables like fuel flow, power, speed, and environmental factors (e.g., wind speed, sea temperature).
-- [ ] Plot performance trends over time for each vessel (e.g., power generation, fuel consumption).
-- [ ] Explore operational efficiency metrics (e.g., propulsion power vs. speed, power generation vs. fuel flow).
+- [x] Visualize power consumption across different areas (e.g., propulsion, service areas).
+- [x] Analyze correlations between variables like fuel flow, power, speed, and environmental factors (e.g., wind speed, sea temperature).
+- [x] Plot performance trends over time for each vessel (e.g., power generation, fuel consumption).
+
 
 ## KPI Selection and Analysis
-- [ ] Identify and define key performance indicators (KPIs) for vessel efficiency (e.g., fuel efficiency, power-to-speed ratio).
-- [ ] Compare KPIs for Vessel 1 and Vessel 2.
-- [ ] Analyze compliance with international regulatory requirements (if applicable).
+- [x] Identify and define key performance indicators (KPIs) for vessel efficiency (e.g., fuel efficiency, power-to-speed ratio).
+- [x] Compare KPIs for Vessel 1 and Vessel 2.
+
 
 ## Document Insights and Narrative Development
 - [ ] Develop a narrative based on EDA findings and KPI analysis.
