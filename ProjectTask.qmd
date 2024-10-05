@@ -1,7 +1,8 @@
 ---
 title: "Cruise Ships KPI Analysis"
 author: "Leona Hasani"
-date: "10.02.2024"
+date: "10.06.2024"
+abstract: ""
 format:
   html:                     
     standalone: true        
@@ -10,10 +11,53 @@ format:
     number-sections: true  
     toc: true 
 highlight-style: github 
-abstract: ""         
+      
 ---
+# Introduction
 
-# Data Preparation
+This report embarks on an exploratory analysis of the key performance indicators (KPIs) and trends for Vessel 1 and Vessel 2 throughout the year 2023. As the cruise industry sails into a future defined by sustainability and environmental responsibility, understanding the operational performance of these vessels becomes critical, not only for improving efficiency but also for ensuring compliance with upcoming regulations.
+
+The European Union has set an ambitious target for all sectors, including maritime, to reach net-zero emissions by 2030 (B.V et al., 1970). This directive puts immense pressure on cruise companies to adapt and innovate, pushing them to rethink fuel consumption, emissions management, and overall operational strategies. For cruise liners, which are significant contributors to carbon emissions, this deadline marks a pivotal moment in their environmental and economic journey.
+
+By analyzing the performance metrics of Vessel 1 and Vessel 2, this report will provide insights into their current operational status and identify key trends that could shape their path toward achieving the EU's sustainability goals. We will delve into essential factors such as fuel efficiency, emissions data, voyage durations, and environmental impacts, all of which play a crucial role in assessing whether these vessels are on track to contribute to the broader net-zero objective.
+
+The exploratory nature of this analysis allows us to uncover not only areas of strength but also potential challenges that lie ahead. As the cruise industry moves toward a future where environmental sustainability is no longer optional, understanding these performance trends will help inform decisions, innovations, and strategic directions for both the present and the long-term goals of the companies involved.
+
+In doing so, this report seeks to provide a holistic view of how Vessel 1 and Vessel 2 are currently performing and how their operations align with the evolving expectations of the industry and the regulatory landscape of the European Union.
+
+# Data Overview
+
+The dataset comprises detailed registrations recorded every 5 minutes over a one-year period for two vessels—Vessel 1 and Vessel 2—belonging to the Cruise Company. It covers the entire year of 2023, spanning from January 1st to December 31st.
+
+To facilitate a deeper understanding of the dataset, a comprehensive description of each variable is available in the task_data folder, under the file named "schema.pdf". This document provides detailed insights into each parameter recorded in the dataset.
+
+The dataset captures a wide array of operational metrics and environmental conditions, including key variables such as:
+
+***Time and Location:*** 'Start Time', 'End Time', 'Latitude', 'Longitude', 'Local Time'
+
+***Power Consumption:*** 'Power Galley 1 & 2', 'HVAC Chiller Power', 'Scrubber Power', 'Diesel Generator Power', 'Propulsion Power', 'Bow and Stern Thruster Power', and overall 'Total Power Consumption'
+
+***Fuel Flow Rates:*** For boilers, incinerators, and main engines, including 'Boiler 1 & 2 Fuel Flow Rate' and 'Main Engine Fuel Flow Rates'
+
+***Environmental Conditions:*** 'Sea Temperature', 'Relative and True Wind Speed and Direction'
+
+***Performance Metrics:*** 'Speed Over Ground', 'Speed Through Water', 'Trim', 'Draft', and 'Duration'
+
+This extensive dataset provides a robust foundation for exploring vessel performance, fuel consumption, environmental impact, and power usage across various systems onboard the vessels. By leveraging these variables, this analysis will offer valuable insights into operational efficiency and highlight areas where improvements can be made in line with the industry’s evolving environmental goals.
+
+# Methodology
+
+## Preprocessing steps
+
+The dataset under examination comprises 44 variables and a total of 210,240 observations, with each observation representing measurements taken at five-minute intervals across various parameters. In the preprocessing stage, we first assessed the dataset for missing values, discovering that the variable "Depth (m)" contained over 27% of its observations as null. Given its negligible impact on the overall analysis and key performance indicators (KPIs), we opted to remove this variable entirely.
+
+Subsequently, we found that the remaining variables each had less than 1% of their total observations missing. For these, we employed the Multiple Imputation by Chained Equations (MICE) technique to handle the missing data. MICE operates on the assumption that data is Missing At Random (MAR), which posits that the likelihood of a value being absent is contingent solely on observed values (Makaba & Dogo, 2019). This method iteratively predicts missing values based on the relationships among other variables in the dataset, employing regression models to generate multiple imputed values. Each missing variable is treated as a dependent variable, while the remaining data serves as independent variables. It is critical to recognize that applying MICE under non-MAR assumptions may yield biased results (Azur et al., 2011). Following this imputation process, the dataset was free of missing values.
+
+We then converted the datetime information into the correct format and performed a thorough check for any duplicate observations, which could potentially compromise the integrity of our analysis. Fortunately, no duplicates were identified; if they had existed, we would have removed them to ensure a clean dataset.
+
+With a complete dataset in hand, we computed the total power consumption by aggregating the power usage from various systems, including galleys, HVAC chillers, generators, and propulsion units. Additionally, we calculated the total fuel flow rates for all engines and boilers by summing their respective fuel consumption rates. We also identified key columns, such as 'Sea Temperature (Celsius)' and various speed measurements, adjusting their values by dividing by 288 to facilitate daily analysis. These transformations enhanced our capacity to conduct a detailed examination of power usage, fuel consumption patterns, and other operational metrics over time.
+
+Lastly, we organized the data by grouping it according to vessel names—specifically 'Vessel 1' and 'Vessel 2'—and by day, resulting in the creation of a new dataset tailored for subsequent analyses. 
 
 ```{python}
 #| label: importing the libraries
@@ -29,6 +73,8 @@ import plotly.express as px
 from fancyimpute import IterativeImputer
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+from scipy.stats import pearsonr
+
 ```
 
 ```{python}
@@ -91,6 +137,10 @@ data.isna().sum()
 
 
 ```{python}
+#| label: parse time
+#| echo: false
+#| message: false
+#| include: false
 # Parse Start Time and End Time columns to datetime format
 data['Start Time'] = pd.to_datetime(data['Start Time'], format='%Y-%m-%dT%H:%M:%S')
 data['End Time'] = pd.to_datetime(data['End Time'], format='%Y-%m-%dT%H:%M:%S')
@@ -98,8 +148,12 @@ data['End Time'] = pd.to_datetime(data['End Time'], format='%Y-%m-%dT%H:%M:%S')
 
 
 ```{python}
-
+#| label: correlation matrix
+#| echo: false
+#| message: false
+#| include: false
 # Calculating the correlation matrix
+
 corr_matrix = data.corr()
 
 # Creating the correlation heatmap using plotly
@@ -114,6 +168,11 @@ fig.show()
 ```
 
 ```{python}
+#| label: missing values heatmap
+#| echo: false
+#| message: false
+#| include: false
+
 # Create a heatmap of missing values
 plt.figure(figsize=(12, 8))
 sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
@@ -124,10 +183,22 @@ plt.show()
 ```
 
 ```{python}
+#| label: drop columns
+#| echo: false
+#| message: false
+#| include: false
+
+
 data = data.drop(columns=['Depth (m)'])
 ```
 
 ```{python}
+#| label: heatmap of missing values
+#| echo: false
+#| message: false
+#| include: false
+
+
 # Create a heatmap of missing values
 plt.figure(figsize=(12, 8))
 sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
@@ -138,6 +209,11 @@ plt.show()
 ```
 
 ```{python}
+#| label: mice imputation
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
 
 # Identify columns with missing values
 columns_with_na = data.columns[data.isnull().any()]
@@ -156,23 +232,49 @@ print(df_imputed.isnull().sum())  # This should show 0 missing values for all co
 ```
 
 ```{python}
-#plt.figure(figsize=(12, 8))
-#sns.heatmap(df_imputed.isnull(), cbar=False, cmap='viridis')
+#| label: another heatmap of missing values
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(df_imputed.isnull(), cbar=False, cmap='viridis')
 
 # Show the plot
-#plt.title('Heatmap of Missing Values in the DataFrame')
-#plt.show()
+plt.title('Heatmap of Missing Values in the DataFrame')
+plt.show()
+
 ```
 
 ```{python}
-#df_imputed.to_csv('task_data/df_imputed.csv', index=False)
+#| label: save the imputed dataset to the local file
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
+
+df_imputed.to_csv('task_data/df_imputed.csv', index=False)
+
 ```
 
 ```{python}
+#| label: read the imputed dataset
+#| echo: false
+#| message: false
+
+
 df = pd.read_csv('task_data/df_imputed.csv', sep=",", header=0, index_col=False)
+
 ```
 
 ```{python}
+#| label: look again at the missing values heatmap
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
 
 plt.figure(figsize=(12, 8))
 sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
@@ -184,6 +286,11 @@ plt.show()
 ```
 
 ```{python}
+#| label: check for duplicate rows
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
 
 # Check for duplicates across all columns
 duplicate_rows = df[df.duplicated()]
@@ -194,6 +301,11 @@ print(f"Number of duplicate rows: {duplicate_rows.shape[0]}")
 ```
 
 ```{python}
+#| label: Boxplots of numerical variables
+#| echo: false
+#| message: false
+
+
 # Create a list of numerical variables
 numerical_columns = df.select_dtypes(include='number').columns
 
@@ -215,6 +327,11 @@ plt.show()
 ```
 
 ```{python}
+#| label: parse time and do calculations of the totals
+#| echo: false
+#| message: false
+#| include: false
+
 
 # Parse Start Time and End Time columns to datetime format
 df['Start Time'] = pd.to_datetime(df['Start Time'], format='%Y-%m-%dT%H:%M:%S')
@@ -265,13 +382,22 @@ df['All Boiler Fuel Flow Rate (L/h)'] = (
 
 
 ```{python}
+#| label: dataset overview
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
 df.head()
 ```
 
 
 
 ```{python}
-
+#| label: group by date and vessel name
+#| echo: false
+#| message: false
+#| include: false
 
 # Extract the date from the Start Time column
 df['Date'] = df['Start Time'].dt.date
@@ -286,14 +412,32 @@ print(df_grouped_by_day_vessel.head())
 
 
 ```{python}
+#| label: group by date and vessel name dataset head
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
 df_grouped_by_day_vessel
 ```
 
 ```{python}
+#| label: group by date and vessel name dataset columns
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
 print(df_grouped_by_day_vessel.columns)
 ```
 
 ```{python}
+#| label: group by date and vessel name dataset division
+#| echo: false
+#| message: false
+#| include: false
+
+
 # Define the columns you want to divide by 288
 columns_to_divide = ['Sea Temperature (Celsius)', 'Speed Over Ground (knots)', 'True Wind Speed (knots)', 'Relative Wind Speed (knots)', 'Speed Through Water (knots)']
 
@@ -306,10 +450,22 @@ print(df_grouped_by_day_vessel.head())
 ```
 
 ```{python}
+#| label: group by date and vessel name dataset head2
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
 df_grouped_by_day_vessel.head()
 ```
 
 ```{python}
+#| label: group by date and vessel name column removal
+#| echo: false
+#| message: false
+#| include: false
+
+
 # List of the columns I want to remove
 columns_to_remove = [
     'Latitude (Degrees)',
@@ -332,13 +488,19 @@ new_df.head()
 ```
 
 ```{python}
+#| label: new dataset
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
 new_df
 ```
 
 ```{python}
 #| label: diving the day into parts
 #| echo: false
-#| message: true
+#| message: false
 #| include: false
 #| eval: false 
 
@@ -371,25 +533,36 @@ print(df_grouped_by_part_of_day[['Date', 'Vessel Name', 'Part of Day']].drop_dup
 
 
 ```{python}
+#| label: group by part of the day info
 #| echo: false
-#| message: true
+#| message: false
 #| include: false
 #| eval: false 
+
 df_grouped_by_part_of_day.info()
 ```
 
 
 ```{python}
+#| label: grouped by part of the day dataset
 #| echo: false
-#| message: true
+#| message: false
 #| include: false
 #| eval: false 
+
+
 df_grouped_by_part_of_day
 ```
 
 # Descriptive Statistics
 
 ```{python}
+#| label: group by only of the day dataframe
+#| echo: false
+#| message: false
+#| include: false
+#| eval: false 
+
 df_grouped_by_day_vessel
 ```
 
@@ -399,6 +572,10 @@ df_grouped_by_day_vessel
 
 
 ```{python}
+#| label: Plot1
+#| echo: false
+#| message: false
+
 # Assuming df is your dataset with power and fuel variables
 
 plt.figure(figsize=(12, 6))
@@ -418,6 +595,10 @@ plt.show()
 ```
 
 ```{python}
+#| label: Plot2
+#| echo: false
+#| message: false
+
 plt.figure(figsize=(12, 6))
 
 sns.lineplot(data=df_grouped_by_day_vessel, x='Date', y='Total Power Consumption (MW)', hue='Vessel Name', palette='Set1')
@@ -435,6 +616,10 @@ plt.show()
 ```
 
 ```{python}
+#| label: Plot3
+#| echo: false
+#| message: false
+
 # Define the power source columns to sum for each vessel
 power_sources = [
     'Power Galley 1 (MW)', 
@@ -504,6 +689,10 @@ fig_vessel_2.show()
 
 
 ```{python}
+#| label: Plot4
+#| echo: false
+#| message: false
+
 # Step 1: Set the figure size
 plt.figure(figsize=(12, 6))
 
@@ -523,6 +712,10 @@ plt.show()
 ```
 
 ```{python}
+#| label: Plot5
+#| echo: false
+#| message: false
+
 plt.figure(figsize=(12, 6))
 
 # Assuming df_grouped_by_day_vessel is a pre-grouped DataFrame
@@ -542,6 +735,10 @@ plt.show()
 
 
 ```{python}
+#| label: Plot6
+#| echo: false
+#| message: false
+
 # Define the engine power source columns to sum for each vessel
 engine_power_sources = [
     'Main Engine 1 Fuel Flow Rate (kg/h)', 
@@ -598,6 +795,10 @@ fig_engine_vessel_2.show()
 
 
 ```{python}
+#| label: Plot7
+#| echo: false
+#| message: false
+
 plt.figure(figsize=(12, 6))
 
 sns.lineplot(data=df, x='Date', y='All Boiler Fuel Flow Rate (L/h)', hue='Vessel Name', palette='Set1')
@@ -616,6 +817,10 @@ plt.show()
 ```
 
 ```{python}
+#| label: Plot8
+#| echo: false
+#| message: false
+
 # Assuming you have a DataFrame grouped by date and vessel
 plt.figure(figsize=(12, 6))
 
@@ -635,6 +840,10 @@ plt.show()
 ```
 
 ```{python}
+#| label: Plot9
+#| echo: false
+#| message: false
+
 # Calculate total boiler fuel flow for each vessel
 boiler_source_totals_vessel_1 = [
     df[df['Vessel Name'] == 'Vessel 1']['Boiler 1 Fuel Flow Rate (L/h)'].sum(),
@@ -693,7 +902,9 @@ fig_boiler_vessel_2.show()
 
 
 ```{python}
-
+#| label: Plot10
+#| echo: false
+#| message: false
 
 # Create scatter plot for Vessel 1
 fig_speed_fuel_vessel_1 = px.scatter(
@@ -736,10 +947,11 @@ fig_speed_fuel_vessel_2.show()
 ```
 
 ```{python}
-from scipy.stats import pearsonr
+#| label: Pearsoncoefficient for vessel1
+#| echo: false
+#| message: false
+#| include: false
 
-# Sample DataFrame creation (replace this with your actual DataFrame)
-# df = pd.read_csv('your_data.csv')  # Uncomment to load your data
 
 # Calculate Pearson correlation coefficient for Vessel 1
 vessel_1_data = df[df['Vessel Name'] == 'Vessel 1']
@@ -749,13 +961,15 @@ pearson_corr_vessel_1, _ = pearsonr(
 )
 
 pearson_corr_vessel_1
+
 ```
 
 ```{python}
-from scipy.stats import pearsonr
+#| label: Pearsson coefficient for vessel2
+#| echo: false
+#| message: false
+#| include: false
 
-# Sample DataFrame creation (replace this with your actual DataFrame)
-# df = pd.read_csv('your_data.csv')  # Uncomment to load your data
 
 # Calculate Pearson correlation coefficient for Vessel 1
 vessel_2_data = df[df['Vessel Name'] == 'Vessel 2']
@@ -769,10 +983,10 @@ pearson_corr_vessel_2
 ```
 
 ```{python}
+#| label: Plot11
+#| echo: false
+#| message: false
 
-
-# Sample DataFrame creation (replace this with your actual DataFrame)
-# df = pd.read_csv('your_data.csv')  # Uncomment to load your data
 
 # Calculate Pearson correlation coefficient for Vessel 1
 vessel_1_data = df[df['Vessel Name'] == 'Vessel 1']
@@ -844,6 +1058,11 @@ print(f'Pearson correlation for Vessel 2 (Power Consumption): {pearson_corr_vess
 # Key Performance Indicators
 
 ```{python}
+#| label: kpi
+#| echo: false
+#| message: false
+#| include: false
+
 # Step 1: Create a new DataFrame
 df_new = df.copy()
 
@@ -909,8 +1128,10 @@ print(kpi_data[['Vessel Name', 'Energy Efficiency Ratio (EER)', 'Operational Eff
 ```
 
 ```{python}
-import matplotlib.pyplot as plt
-import seaborn as sns
+#| label: Plot12 of kpi
+#| echo: false
+#| message: false
+
 
 # Set the aesthetic style of the plots
 sns.set(style="whitegrid")
@@ -953,14 +1174,14 @@ plt.show()
 
 
 
-## Energy Efficiency Ratio
+# Reference List 
 
-## Operational Efficiency
+Azur, M. J., Stuart, E. A., Frangakis, C., & Leaf, P. J. (2011). Multiple imputation by chained equations: what is
+it and how does it work? International journal of methods in psychiatric research, 20(1), 40–49.
+https://doi.org/10.1002/mpr.329
 
-# Visualization
+B.V, D. C., Directorate-General for Maritime Affairs and Fisheries                                          (European Commission), & Consulting, R. M. (1970, January 1). Good practices for sustainable cruise tourism. Publications Office of the EU. https://op.europa.eu/en/publication-detail/-/publication/664f158c-909c-11ed-b508-01aa75ed71a1 
 
-## Time Series Plots
-
-## Bar Charts: Compare power contributions from various sources (e.g., different generators)
-
-## Scatter Plots: Analyze relationships between variables (e.g., speed versus fuel consumption)
+Makaba, T. & Dogo, E. (2019). A Comparison of Strategies for Missing Values in Data on Machine Learning
+Classification Algorithms. International Multidisciplinary Information Technology and Engineering
+Conference (IMITEC), Vanderbijlpark, South Africa, pp. 1-7. https://ieeexplore.ieee.org/document/9015889
