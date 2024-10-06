@@ -1,6 +1,6 @@
 # Cruise Vessel Performance Analysis
 
-This repository contains the analysis of cruise vessel performance using Python code written in a Quarto (`.qmd`) file. The project focuses on evaluating operational metrics such as fuel efficiency, power generation, and other Key Performance Indicators (KPIs) to optimize maritime resource usage and improve sustainability.
+This repository contains the analysis of two cruise vessels' performance of Cruise Company, using Python code written in a Quarto (`.qmd`) file. The project focuses on evaluating operational metrics such as fuel efficiency, power generation, and other Key Performance Indicators (KPIs) to optimize maritime resource usage and improve sustainability.
 
 
 ## Introduction
