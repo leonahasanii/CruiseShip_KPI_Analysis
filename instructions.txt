@@ -1,0 +1,80 @@
+- Setup Instructions for Cruise Vessel Performance Analysis
+
+Prerequisites
+To replicate or perform further analysis on this project, the following requirements must be met:
+
+VS Code (Visual Studio Code) IDE
+You will need to use an Integrated Development Environment (IDE) for coding and analysis. For this project, Visual Studio Code was used.
+
+Download and install from:
+VS Code
+
+Quarto Installed
+Before running the .qmd (Quarto Markdown) file, make sure that Quarto is installed on your machine. Quarto is an open-source technical publishing system that enables the rendering of the .qmd file into HTML format.
+
+You can install Quarto from:
+Quarto Install Guide
+
+Python Installed
+The analysis relies on several Python libraries. Ensure you have Python 3.8 or later installed. You can download the latest version from:
+Python Official Site
+
+- Setting up the Environment
+To install the necessary libraries, create a virtual environment and activate it:
+
+bash
+Copy code
+# Create a virtual environment (optional but recommended)
+python3 -m venv venv
+
+# Activate the virtual environment
+# On Windows:
+venv\Scripts\activate
+# On MacOS/Linux:
+source venv/bin/activate
+Next, install the required Python libraries:
+
+bash
+Copy code
+# Install necessary Python libraries
+pip install pandas matplotlib seaborn numpy scipy statsmodels sklearn plotly
+Here are the libraries used in this project:
+
+pandas – For data manipulation and analysis
+matplotlib – For plotting and visualizations
+seaborn – For enhanced data visualizations
+numpy – For numerical computations
+scipy – For scientific computing, including statistical analysis
+statsmodels – For statistical models and hypothesis testing
+sklearn – For machine learning models and preprocessing
+plotly – For interactive data visualizations
+These libraries can be installed all together using the pip command above.
+
+Replicating the Analysis
+To replicate the analysis, follow these steps:
+
+Download the Repository
+Clone or download this repository to your local machine.
+
+Navigate to the Scripts Folder
+Open the scripts/ folder, where the Quarto (.qmd) file is located.
+
+Open the Project in VS Code
+Use VS Code to open the project. Make sure that Quarto is correctly installed and set up in your VS Code.
+
+Run the Quarto File
+To generate the analysis report, run the Quarto file by executing the following command:
+
+bash
+Copy code
+quarto render kpi_analysis.qmd
+This will generate the HTML report in the output/ folder.
+
+Viewing the Project Without Additional Setup
+If you only want to view the results and insights of the analysis, you can download and open the pre-generated report:
+
+Download the Report
+Download the ProjectTask.html file located in the output/ folder.
+
+Open the HTML File
+You can view the report by opening ProjectTask.html in any web browser. No need to install any Python libraries or Quarto setup if you only wish to view the report.

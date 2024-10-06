@@ -2,7 +2,7 @@
 title: "Cruise Ships KPI Analysis"
 author: "Leona Hasani"
 date: "10.06.2024"
-abstract: ""
+abstract: "This analysis investigates the operational performance of two cruise vessels of Cruise Company, respectively named Vessel 1 and Vessel 2, focusing on the significance of efficiency metrics amid rising fuel costs and environmental concerns. Key Performance Indicators (KPIs) were employed to evaluate each vessel's energy and operational efficiency. The Energy Efficiency Ratio (EER) demonstrated that one vessel outperformed the other one. Operational efficiency metrics indicated that the more efficient vessel generated significantly more power per operational hour, suggesting better resource utilization. Additionally, fuel efficiency assessments highlighted a more effective fuel management strategy in the higher-performing vessel, which required less fuel to produce energy. Speed analysis further revealed that the more efficient vessel traveled faster, enhancing operational scheduling. These findings provide valuable insights that enable the Cruise Company to optimize operational practices, reduce costs, and align with sustainability goals, contributing to a more efficient and environmentally responsible maritime industry."
 format:
   html:                     
     standalone: true        
@@ -17,9 +17,9 @@ highlight-style: github
 
 This report embarks on an exploratory analysis of the key performance indicators (KPIs) and trends for Vessel 1 and Vessel 2 throughout the year 2023. As the cruise industry sails into a future defined by sustainability and environmental responsibility, understanding the operational performance of these vessels becomes critical, not only for improving efficiency but also for ensuring compliance with upcoming regulations.
 
-The European Union has set an ambitious target for all sectors, including maritime, to reach net-zero emissions by 2030 (B.V et al., 1970). This directive puts immense pressure on cruise companies to adapt and innovate, pushing them to rethink fuel consumption, emissions management, and overall operational strategies. For cruise liners, which are significant contributors to carbon emissions, this deadline marks a pivotal moment in their environmental and economic journey.
+The European Union has set an ambitious target for all sectors, including maritime, to reach net-zero emissions by 2030 (B.V et al., 1970). This directive puts immense pressure on cruise companies to adapt and innovate, pushing them to rethink fuel consumption, emissions management, and overall operational strategies. For cruise companies, which are significant contributors to carbon emissions, this deadline marks a pivotal moment in their environmental and economic journey.
 
-By analyzing the performance metrics of Vessel 1 and Vessel 2, this report will provide insights into their current operational status and identify key trends that could shape their path toward achieving the EU's sustainability goals. We will delve into essential factors such as fuel efficiency, emissions data, voyage durations, and environmental impacts, all of which play a crucial role in assessing whether these vessels are on track to contribute to the broader net-zero objective.
+By analyzing the performance metrics of Vessel 1 and Vessel 2 of Cruise Company, this report will provide insights into their current operational status and identify key trends that could shape their path toward achieving the EU's sustainability goals. We will delve into essential factors such as fuel efficiency, voyage durations, and environmental impacts, all of which play a crucial role in assessing whether these vessels are on track to contribute to the broader net-zero objective.
 
 The exploratory nature of this analysis allows us to uncover not only areas of strength but also potential challenges that lie ahead. As the cruise industry moves toward a future where environmental sustainability is no longer optional, understanding these performance trends will help inform decisions, innovations, and strategic directions for both the present and the long-term goals of the companies involved.
 
@@ -27,7 +27,7 @@ In doing so, this report seeks to provide a holistic view of how Vessel 1 and Ve
 
 # Data Overview
 
-The dataset comprises detailed registrations recorded every 5 minutes over a one-year period for two vessels—Vessel 1 and Vessel 2—belonging to the Cruise Company. It covers the entire year of 2023, spanning from January 1st to December 31st.
+The dataset comprises detailed registrations recorded every 5 minutes over a one-year period for two vessels, *Vessel 1 and Vessel 2*, belonging to the ***Cruise Company***. It covers the entire year of 2023, spanning from January 1st to December 31st.
 
 To facilitate a deeper understanding of the dataset, a comprehensive description of each variable is available in the task_data folder, under the file named "schema.pdf". This document provides detailed insights into each parameter recorded in the dataset.
 
@@ -43,7 +43,7 @@ The dataset captures a wide array of operational metrics and environmental condi
 
 ***Performance Metrics:*** 'Speed Over Ground', 'Speed Through Water', 'Trim', 'Draft', and 'Duration'
 
-This extensive dataset provides a robust foundation for exploring vessel performance, fuel consumption, environmental impact, and power usage across various systems onboard the vessels. By leveraging these variables, this analysis will offer valuable insights into operational efficiency and highlight areas where improvements can be made in line with the industry’s evolving environmental goals.
+This extensive dataset provides a foundation for exploring vessel performance, fuel consumption, environmental impact, and power usage across various systems onboard the vessels. By leveraging these variables, this analysis will offer valuable insights into operational efficiency and highlight areas where improvements can be made in line with the industry’s evolving environmental goals.
 
 # Methodology
 
@@ -51,13 +51,15 @@ This extensive dataset provides a robust foundation for exploring vessel perform
 
 The dataset under examination comprises 44 variables and a total of 210,240 observations, with each observation representing measurements taken at five-minute intervals across various parameters. In the preprocessing stage, we first assessed the dataset for missing values, discovering that the variable "Depth (m)" contained over 27% of its observations as null. Given its negligible impact on the overall analysis and key performance indicators (KPIs), we opted to remove this variable entirely.
 
-Subsequently, we found that the remaining variables each had less than 1% of their total observations missing. For these, we employed the Multiple Imputation by Chained Equations (MICE) technique to handle the missing data. MICE operates on the assumption that data is Missing At Random (MAR), which posits that the likelihood of a value being absent is contingent solely on observed values (Makaba & Dogo, 2019). This method iteratively predicts missing values based on the relationships among other variables in the dataset, employing regression models to generate multiple imputed values. Each missing variable is treated as a dependent variable, while the remaining data serves as independent variables. It is critical to recognize that applying MICE under non-MAR assumptions may yield biased results (Azur et al., 2011). Following this imputation process, the dataset was free of missing values.
+Subsequently, we found that the remaining variables each had less than 1% of their total observations missing. For these, we employed the ***Multiple Imputation by Chained Equations (MICE)*** technique to handle the missing data. 
+
+***MICE*** operates on the assumption that data is Missing At Random (MAR), which posits that the likelihood of a value being absent is contingent solely on observed values (Makaba & Dogo, 2019). This method iteratively predicts missing values based on the relationships among other variables in the dataset, employing regression models to generate multiple imputed values. Each missing variable is treated as a dependent variable, while the remaining data serves as independent variables. It is critical to recognize that applying MICE under non-MAR assumptions may yield biased results (Azur et al., 2011). Following this imputation process, the dataset was free of missing values.
 
 We then converted the datetime information into the correct format and performed a thorough check for any duplicate observations, which could potentially compromise the integrity of our analysis. Fortunately, no duplicates were identified; if they had existed, we would have removed them to ensure a clean dataset.
 
 With a complete dataset in hand, we computed the total power consumption by aggregating the power usage from various systems, including galleys, HVAC chillers, generators, and propulsion units. Additionally, we calculated the total fuel flow rates for all engines and boilers by summing their respective fuel consumption rates. We also identified key columns, such as 'Sea Temperature (Celsius)' and various speed measurements, adjusting their values by dividing by 288 to facilitate daily analysis. These transformations enhanced our capacity to conduct a detailed examination of power usage, fuel consumption patterns, and other operational metrics over time.
 
-Lastly, we organized the data by grouping it according to vessel names—specifically 'Vessel 1' and 'Vessel 2'—and by day, resulting in the creation of a new dataset tailored for subsequent analyses. 
+Lastly, we organized the data by grouping it according to vessel names, specifically 'Vessel 1' and 'Vessel 2', and by day, resulting in the creation of a new dataset tailored for subsequent analyses. 
 
 ```{python}
 #| label: importing the libraries
@@ -141,9 +143,11 @@ data.isna().sum()
 #| echo: false
 #| message: false
 #| include: false
+
 # Parse Start Time and End Time columns to datetime format
 data['Start Time'] = pd.to_datetime(data['Start Time'], format='%Y-%m-%dT%H:%M:%S')
 data['End Time'] = pd.to_datetime(data['End Time'], format='%Y-%m-%dT%H:%M:%S')
+
 ```
 
 
@@ -152,11 +156,11 @@ data['End Time'] = pd.to_datetime(data['End Time'], format='%Y-%m-%dT%H:%M:%S')
 #| echo: false
 #| message: false
 #| include: false
-# Calculating the correlation matrix
 
+# Calculate the correlation matrix
 corr_matrix = data.corr()
 
-# Creating the correlation heatmap using plotly
+# Correlation heatmap
 fig = px.imshow(corr_matrix, 
                 text_auto=True, 
                 aspect="auto", 
@@ -165,6 +169,7 @@ fig = px.imshow(corr_matrix,
 
 # Show the plot
 fig.show()
+
 ```
 
 ```{python}
@@ -180,6 +185,7 @@ sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
 # Show the plot
 plt.title('Heatmap of Missing Values in the DataFrame')
 plt.show()
+
 ```
 
 ```{python}
@@ -188,8 +194,9 @@ plt.show()
 #| message: false
 #| include: false
 
-
+# Remove the depth column
 data = data.drop(columns=['Depth (m)'])
+
 ```
 
 ```{python}
@@ -206,6 +213,7 @@ sns.heatmap(data.isnull(), cbar=False, cmap='viridis')
 # Show the plot
 plt.title('Heatmap of Missing Values in the DataFrame')
 plt.show()
+
 ```
 
 ```{python}
@@ -222,11 +230,11 @@ columns_with_na = data.columns[data.isnull().any()]
 mice_imputer = IterativeImputer()
 
 # Apply MICE only to the columns with missing values
-df_imputed = data.copy()  # Create a copy to keep the original DataFrame
+df_imputed = data.copy()  # Create a copy to keep the original dataset
 df_imputed[columns_with_na] = mice_imputer.fit_transform(data[columns_with_na])
 
-# Check the result
-print(df_imputed.isnull().sum())  # This should show 0 missing values for all columns with missing values
+# Observe the result
+print(df_imputed.isnull().sum())  # If it shows zero we are good to go (no missing values anymore)
 
 
 ```
@@ -238,6 +246,7 @@ print(df_imputed.isnull().sum())  # This should show 0 missing values for all co
 #| include: false
 #| eval: false 
 
+# Plot again the heatmap of missing values
 plt.figure(figsize=(12, 8))
 sns.heatmap(df_imputed.isnull(), cbar=False, cmap='viridis')
 
@@ -254,7 +263,7 @@ plt.show()
 #| include: false
 #| eval: false 
 
-
+# Create the csv file of imputed dataset and save it to local file
 df_imputed.to_csv('task_data/df_imputed.csv', index=False)
 
 ```
@@ -264,7 +273,7 @@ df_imputed.to_csv('task_data/df_imputed.csv', index=False)
 #| echo: false
 #| message: false
 
-
+# Read the new imputed dataset
 df = pd.read_csv('task_data/df_imputed.csv', sep=",", header=0, index_col=False)
 
 ```
@@ -276,6 +285,7 @@ df = pd.read_csv('task_data/df_imputed.csv', sep=",", header=0, index_col=False)
 #| include: false
 #| eval: false 
 
+# Look again for the missing values
 plt.figure(figsize=(12, 8))
 sns.heatmap(df.isnull(), cbar=False, cmap='viridis')
 
@@ -296,9 +306,17 @@ plt.show()
 duplicate_rows = df[df.duplicated()]
 
 
-# Check how many duplicates exist
+# Check if any duplicates exists
 print(f"Number of duplicate rows: {duplicate_rows.shape[0]}")
+
 ```
+
+# Exploratory Data Analysis
+
+## Boxplot Analysis of Numerical Variables
+
+To visually assess the presence of potential outliers in the dataset, a boxplot was generated for the numerical variables. Boxplots provide an effective way to detect extreme values, illustrating any deviations from the expected distribution within the data.
+
 
 ```{python}
 #| label: Boxplots of numerical variables
@@ -324,7 +342,16 @@ plt.subplots_adjust(top=0.9)
 g.fig.suptitle('Boxplots of Numerical Features', fontsize=16)
 
 plt.show()
+
 ```
+
+From the boxplot analysis, several variables, such as Power Galley 1 (MW), Power Galley 2 (MW), and HVAC Chiller 3 Power (MW) exhibit noticeable outliers. These deviations could suggest irregularities or extreme fluctuations in power consumption, which may warrant further investigation 
+under different analytical contexts.
+
+However, given that the objective of this analysis is exploratory rather than predictive, and we are not constructing machine learning models that depend on the removal of outliers for improved performance, no immediate 
+steps will be taken to eliminate these values. It is important to note that the process of outlier removal should be informed by domain-specific  knowledge of the variables in question, as uninformed removal might 
+distort the data's integrity or overlook significant trends. Therefore, we retain the outliers for the purpose of this analysis to ensure the  completeness of the exploratory study.
+
 
 ```{python}
 #| label: parse time and do calculations of the totals
@@ -340,7 +367,7 @@ df['End Time'] = pd.to_datetime(df['End Time'], format='%Y-%m-%dT%H:%M:%S')
 # Create a new column to calculate the duration of each measurement interval in minutes
 df['Duration (Minutes)'] = (df['End Time'] - df['Start Time']).dt.total_seconds() / 60
 
-# Example of calculating total power consumption over each interval
+# Calculating total power consumption over each interval
 df['Total Power Consumption (MW)'] = (
     df['Power Galley 1 (MW)'] + 
     df['Power Galley 2 (MW)'] + 
@@ -438,7 +465,7 @@ print(df_grouped_by_day_vessel.columns)
 #| include: false
 
 
-# Define the columns you want to divide by 288
+# Define the columns you want to divide by 288, since it will show like the average temperature within a day
 columns_to_divide = ['Sea Temperature (Celsius)', 'Speed Over Ground (knots)', 'True Wind Speed (knots)', 'Relative Wind Speed (knots)', 'Speed Through Water (knots)']
 
 # Apply division by 288 for the specified columns
@@ -466,7 +493,7 @@ df_grouped_by_day_vessel.head()
 #| include: false
 
 
-# List of the columns I want to remove
+# List of the columns to remove
 columns_to_remove = [
     'Latitude (Degrees)',
     'Longitude (Degrees)',
@@ -479,7 +506,7 @@ columns_to_remove = [
     'Trim (m)'
 ]
 
-# Drop the columns you don't want
+# Drop the columns 
 new_df = df_grouped_by_day_vessel.drop(columns=columns_to_remove, axis=1)
 
 # Display the updated DataFrame
@@ -554,7 +581,6 @@ df_grouped_by_part_of_day.info()
 df_grouped_by_part_of_day
 ```
 
-# Descriptive Statistics
 
 ```{python}
 #| label: group by only of the day dataframe
@@ -568,7 +594,21 @@ df_grouped_by_day_vessel
 
 # Performance Analysis
 
-## Total Power Consumption (MW)
+The performance analysis of the cruise vessels focuses on evaluating trends over time, and key operational metrics to determine their efficiency and effectiveness. By examining various KPIs, we can assess the vessels' energy usage, fuel efficiency, and operational output, providing a detailed understanding of their overall performance.
+
+## Total Power Consumption (MW) Over Time by Vessel
+
+The graph illustrates the total power consumption of two 
+vessels over time, with data recorded at 5-minute intervals 
+throughout 2023. This total power consumption is calculated 
+by aggregating the energy usage from various components, 
+including propulsion systems, generators, HVAC chillers, 
+and galley power, allowing for a comprehensive overview of 
+each vessel's energy demands.
+
+Each line reflects the fluctuations in power usage for 
+two specific vessels, enabling a detailed comparison of 
+their energy consumption patterns over this period.
 
 
 ```{python}
@@ -576,23 +616,45 @@ df_grouped_by_day_vessel
 #| echo: false
 #| message: false
 
-# Assuming df is your dataset with power and fuel variables
 
 plt.figure(figsize=(12, 6))
 
 sns.lineplot(data=df, x='Date', y='Total Power Consumption (MW)', hue='Vessel Name', palette='Set1')
 
-# Step 3: Set plot labels and title
+# Set plot labels and title
 plt.xlabel('Date')
 plt.ylabel('Total Power Consumption (MW)')
-plt.title('Total Power Consumption Over Time by Vessel')
+plt.title('Total Power Consumption Over Time by Vessel - 5 minute intervals')
 plt.xticks(rotation=45)
 plt.legend(title='Vessel')
 
-# Step 4: Display the plot
+# Display the plot
 plt.tight_layout()
 plt.show()
+
 ```
+
+In the graph, Vessel 1 is depicted in red, while Vessel 2 is  shown in blue. The vertical axis measures total power 
+consumption in megawatts (MW), ranging from 0 to 100 MW, 
+while the horizontal axis covers the date range from 
+January 2023 to December 2023.
+
+Both vessels exhibit considerable variability in power 
+usage. Vessel 1 shows higher and more frequent spikes, 
+especially during the early months of 2023, indicating 
+times of intense energy consumption. The power consumption 
+of Vessel 2, while also fluctuating, appears to be somewhat 
+steadier but still includes periods of significant activity, particularly during mid-to-late 2023.
+
+This plot provides a comprehensive view of each vessels 
+energy demands, highlighting their operational patterns and 
+potential times of peak activity.
+
+Now we want to see the daily total power consumption of each
+of the vessels of Cruise Company, during the year 2023.
+
+The graph illustrates the daily power consumption of Vessel 
+1 (red) and Vessel 2 (blue) throughout 2023.
 
 ```{python}
 #| label: Plot2
@@ -603,17 +665,56 @@ plt.figure(figsize=(12, 6))
 
 sns.lineplot(data=df_grouped_by_day_vessel, x='Date', y='Total Power Consumption (MW)', hue='Vessel Name', palette='Set1')
 
-# Step 3: Set plot labels and title
+# Set plot labels and title
 plt.xlabel('Date')
 plt.ylabel('Total Power Consumption (MW)')
-plt.title('Total Power Consumption Over Time by Vessel')
+plt.title('Total Power Consumption Over Time by Vessel - daily')
 plt.xticks(rotation=45)
 plt.legend(title='Vessel')
 
-# Step 4: Display the plot
+# Display the plot
 plt.tight_layout()
 plt.show()
+
 ```
+
+
+Vessel 1 demonstrates significant fluctuations in power 
+usage, with sharp peaks, particularly observed in January 
+and February, where it reaches maximum consumption levels 
+exceeding 25,000 MW. These variations suggest that Vessel 1 
+may be engaged in operations that require varying energy 
+inputs, potentially reflecting high-demand periods or 
+intensive operational activities.
+
+In contrast, Vessel 2 exhibits a more consistent consumption pattern with less volatility. Its consumption occasionally spikes, notably in July and November, where it also surpasses 20,000 MW. However, the majority of its daily power usage remains within a range of 5,000 MW to 15,000 MW, indicating a more stable operational profile compared to Vessel 1.
+
+Overall, the contrasting power consumption patterns 
+highlight the differing operational demands and energy 
+management strategies of each vessel throughout the year. 
+Vessel 1's variability may necessitate a more flexible energy 
+supply, while Vessel 2 steadiness could reflect a more 
+predictable operational rhythm.
+
+### Contribution of Power Sources to Total Power Consumption (MW)
+
+Following this analysis, we aim to examine how specific 
+components of Vessel 1 and Vessel 2 contribute to total 
+power consumption throughout 2023. To visualize this 
+contribution effectively, we will employ pie charts that 
+illustrate the respective percentages of each component for 
+both vessels.
+
+This approach will enable us to see the relative 
+significance of each component in the overall energy usage, 
+facilitating a deeper understanding of their operational 
+efficiencies and highlighting areas where energy management 
+may be optimized. By comparing the distribution of power 
+consumption across different components within each vessel, 
+we can identify patterns and dependencies that may inform 
+future strategies for energy optimization and resource 
+allocation.
+
 
 ```{python}
 #| label: Plot3
@@ -684,32 +785,54 @@ fig_vessel_2.update_layout(
 
 # Show the plot for Vessel 2
 fig_vessel_2.show()
+
 ```
 
+Starting with ***Vessel 1***, we observe that ***Propulsion Power is the primary driver of energy consumption***, accounting for  22.6% of the total. This significant portion underscores the vessel's reliance on propulsion systems, essential for its movement and operational capabilities. ***Power Service follows as the second-largest contributor*** at 14.5%, indicating a substantial demand for onboard electrical services, likely essential for navigation and operational support.
 
+Interestingly, ***Diesel Generator 3*** plays a crucial role, contributing 13.6% to the power consumption. This suggests that it may be the preferred generator for auxiliary power needs, complementing the propulsion systems effectively. The starboard and port side propulsion systems each hold comparable shares, contributing 11.4% and 11.2% respectively. This balance illustrates a well-distributed power usage strategy, essential for maintaining stability and maneuverability.
+
+In contrast, ***Vessel 2*** also highlights ***Propulsion Power as a key component*** but at a slightly lower contribution of 20.5%. This reduction suggests a potential improvement in operational efficiency or a different operational profile compared to Vessel 1. The Power Service demand is more pronounced in Vessel 2, with 17.3% of total consumption, reflecting perhaps a greater reliance on electrical services for onboard functions.
+
+***Diesel Generator 3*** maintains its critical role in Vessel 2 as well, albeit with a lower share of 12.3%. Both starboard and port side propulsion systems have similar contributions, reflecting a consistent design choice for propulsion across both vessels. However, the slight variance in the percentages may indicate different operational conditions or maintenance practices.
+
+Overall, the analysis reveals that both vessels heavily 
+depend on propulsion systems for their operational needs. However, differences in power consumption patterns suggest opportunities for efficiency improvements.
+
+## Total Fuel Flow Rate (kg/h) Over Time by Vessel
+
+The graph illustrates the *fuel flow rate of two vessels of  Cruise Company over time*, with data recorded in kilograms per hour (kg/h) throughout 2023. This total fuel flow rate is calculated by aggregating the fuel consumption from the four main engines onboard each vessel, providing a comprehensive overview of their operational fuel demands.
+
+Each line represents the variations in fuel usage for the two vessels, allowing for a detailed comparison of their fuel consumption patterns over the specified period. 
 
 ```{python}
 #| label: Plot4
 #| echo: false
 #| message: false
 
-# Step 1: Set the figure size
+# Set the figure size
 plt.figure(figsize=(12, 6))
 
-# Step 2: Create the line plot
+# Create the line plot
 sns.lineplot(data=df, x='Date', y='All Engines Fuel Flow Rate (kg/h)', hue='Vessel Name', palette='Set1')
 
-# Step 3: Set plot labels and title
+# Set plot labels and title
 plt.xlabel('Date')
 plt.ylabel('Total Fuel Flow Rate (kg/h)')
-plt.title('Total Fuel Flow Rate Over Time by Vessel')
+plt.title('Total Fuel Flow Rate Over Time by Vessel - 5 minute interval')
 plt.xticks(rotation=45)
 plt.legend(title='Vessel')
 
-# Step 4: Display the plot
+# Display the plot
 plt.tight_layout()
 plt.show()
+
 ```
+
+The plot provides a comprehensive overview of the fuel consumption patterns for two vessels operated by Cruise Company throughout 2023. Initially, ***Vessel 1*** exhibited significant fluctuations in its total fuel flow rate until May, reflecting variable operational demands. Following this period, from June to November, fuel consumption stabilized, albeit with periodic spikes. Notably, the latter months of the year saw a marked increase in fuel flow, indicating a potential surge in activity or operational changes.
+
+In contrast,***Vessel 2***, represented by the blue line, displayed a consistent yet lower fuel flow rate compared to Vessel 1 during the first quarter of the year. However, from May to November, its operational profile shifted dramatically, with a noticeable increase in fuel consumption, surpassing that of Vessel 1. This trend suggests that Vessel 2 was likely engaged in more intensive operations, perhaps due to increased passenger demand or extended voyages.
+
 
 ```{python}
 #| label: Plot5
@@ -718,21 +841,32 @@ plt.show()
 
 plt.figure(figsize=(12, 6))
 
-# Assuming df_grouped_by_day_vessel is a pre-grouped DataFrame
 sns.lineplot(data=df_grouped_by_day_vessel, x='Date', y='All Engines Fuel Flow Rate (kg/h)', hue='Vessel Name', palette='Set1')
 
-# Step 3: Set plot labels and title
+# Set plot labels and title
 plt.xlabel('Date')
 plt.ylabel('Total Fuel Flow Rate (kg/h)')
 plt.title('Total Fuel Flow Rate Over Time by Vessel (Grouped by Day)')
 plt.xticks(rotation=45)
 plt.legend(title='Vessel')
 
-# Step 4: Display the plot
+# Display the plot
 plt.tight_layout()
 plt.show()
+
 ```
 
+Analyzing the total fuel flow rate on a daily basis reveals distinct seasonal patterns for both vessels. During the summer months, Vessel 2's fuel consumption surged, reflecting high operational activity. Conversely, Vessel 1 peaked in early November, indicating a specific operational demand that may warrant further investigation.
+
+To enhance our understanding of the environmental implications of these fuel consumption patterns, it would be beneficial to correlate the fuel flow rate with carbon footprint data. By quantifying emissions per kilogram of fuel consumed, we can evaluate the vessels' performance against the sustainability objectives set by the European Union for cruise ships. This analysis could provide valuable insights into the cruise industry's environmental impact and its alignment with global sustainability goals.
+
+### Contribution of Engine Fuel Flow Rates to Total Fuel Consumption (kg/h)
+
+The pie charts depict the distribution of fuel flow rates among the four engines for both vessels, illustrating the relative contributions of each engine to total fuel consumption.
+
+For *Vessel 1*, ***Engine 3 stands out as the primary contributor***, followed closely by Engine 1. This suggests that these engines play crucial roles in driving fuel consumption, while Engines 2 and 4 contribute to a lesser extent.
+
+In *Vessel 2*, a similar trend emerges, with ***Engine 3 leading in fuel flow rates***, and Engine 1 also contributing significantly. However, the distribution here appears more balanced, indicating a more even utilization of the engines compared to Vessel 1.
 
 ```{python}
 #| label: Plot6
@@ -790,8 +924,14 @@ fig_engine_vessel_2.update_layout(
 
 # Show the plot for Vessel 2
 fig_engine_vessel_2.show()
+
 ```
 
+## Total Boiler Flow Rate (kg/h) Over Time by Vessel
+
+The graphs depict the *temporal dynamics of boiler fuel flow rates for two vessels operated by the Cruise Company throughout 2023*, expressed in litres per hour (L/h). The total fuel flow rate is calculated by aggregating the fuel consumption from the two principal boilers on each vessel, thereby providing a nuanced understanding of their operational fuel demands.
+
+Each line in the graphs encapsulates the variations in boiler fuel usage, enabling a comparative analysis of the fuel consumption patterns exhibited by the two vessels over the specified one year timeframe. 
 
 
 ```{python}
@@ -803,41 +943,54 @@ plt.figure(figsize=(12, 6))
 
 sns.lineplot(data=df, x='Date', y='All Boiler Fuel Flow Rate (L/h)', hue='Vessel Name', palette='Set1')
 
-# Step 3: Set plot labels and title
+# Set plot labels and title
 plt.xlabel('Date')
 plt.ylabel('Total Boiler Fuel Flow Rate (L/h)')
 plt.title('Total Boiler Fuel Flow Rate Over Time by Vessel')
 plt.xticks(rotation=45)
 plt.legend(title='Vessel')
 
-# Step 4: Display the plot
+# Display the plot
 plt.tight_layout()
 plt.show()
 
 ```
+
+The graph illustrates that *Vessel 2* consistently exhibits higher values of total boiler fuel flow rates (L/h), with a notable peak occurring in June. This vessel experiences significant fluctuations in fuel flow, highlighting its variable operational demands throughout the year. In contrast, Vessel 1 demonstrates much lower fuel flow rates, with its maximum values recorded at the end of March and the beginning of April.
+
 
 ```{python}
 #| label: Plot8
 #| echo: false
 #| message: false
 
-# Assuming you have a DataFrame grouped by date and vessel
+
 plt.figure(figsize=(12, 6))
 
 sns.lineplot(data=df_grouped_by_day_vessel, x='Date', y='All Boiler Fuel Flow Rate (L/h)', hue='Vessel Name', palette='Set1')
 
-# Step 3: Set plot labels and title
+# Set plot labels and title
 plt.xlabel('Date')
 plt.ylabel('Total Boiler Fuel Flow Rate (L/h)')
 plt.title('Total Boiler Fuel Flow Rate Over Time by Vessel')
 plt.xticks(rotation=45)
 plt.legend(title='Vessel')
 
-# Step 4: Display the plot
+# Display the plot
 plt.tight_layout()
 plt.show()
 
 ```
+
+Analyzing the daily fluctuations in total boiler fuel flow rates reveals that *Vessel 2* reached an impressive peak of over 80,000 litres per hour in June, while Vessel 1 peaked at approximately 40,000 litres per hour, indicating that Vessel 2's consumption is effectively double that of Vessel 1. This disparity raises important questions regarding the environmental implications of such high fuel consumption. The observed peak may correspond to a busy operational period, prompting further investigation into the underlying factors contributing to this increase and its potential environmental impact.
+
+### Contribution of Boiler Fuel Flow Rates to Total Fuel Consumption (L/h)
+
+The pie charts  illustrate the *distribution of boiler fuel flow rates across the two boilers in each vessel*, highlighting their respective roles in total fuel consumption. 
+
+In Vessel 1, ***Boiler 1 takes the lead***, while Boiler 2 closely follows, showcasing a balanced operational dynamic.
+
+In contrast, Vessel 2 presents a different narrative; ***Boiler 2 emerges as the dominant player***, indicating a shift in fuel utilization patterns.
 
 ```{python}
 #| label: Plot9
@@ -900,51 +1053,77 @@ fig_boiler_vessel_2.show()
 
 ```
 
+## Impact of Sea Conditions
+
+### Speed vs Total Engines Fuel Flow Rate (kg/h)
+
+Next, we aim to visualize the ***relationship between the speed of each vessel and the total engine fuel flow rate***. This analysis will provide insights into how variations in speed influence fuel consumption across the specific vessels.
 
 ```{python}
 #| label: Plot10
 #| echo: false
 #| message: false
 
+# Calculate Pearson correlation coefficient for Vessel 1
+vessel_1_data = df[df['Vessel Name'] == 'Vessel 1']
+pearson_corr_vessel_1_power, _ = pearsonr(
+    vessel_1_data['Speed Over Ground (knots)'],
+    vessel_1_data['All Engines Fuel Flow Rate (kg/h)']  # Replace with actual fuel consumption column name
+)
+
 # Create scatter plot for Vessel 1
-fig_speed_fuel_vessel_1 = px.scatter(
-    df[df['Vessel Name'] == 'Vessel 1'],
+fig_speed_power_vessel_1 = px.scatter(
+    vessel_1_data,
     x='Speed Over Ground (knots)',  # Actual speed column name
-    y='All Engines Fuel Flow Rate (kg/h)',  # Actual fuel consumption column name
-    title='Speed vs. Fuel Consumption - Vessel 1',
+    y='All Engines Fuel Flow Rate (kg/h)',  # Actual All Engines Fuel Flow Rate (kg/h)
+    title=f'Speed vs. Total Fuel Flow Rate - Vessel 1 (Pearson Correlation: {pearson_corr_vessel_1_power:.2f})',
     labels={
         'Speed Over Ground (knots)': 'Speed Over Ground (knots)',
-        'All Engines Fuel Flow Rate (kg/h)': 'Fuel Consumption (kg/h)'
+        'All Engines Fuel Flow Rate (kg/h)': 'All Engines Fuel Flow Rate (kg/h)'
     },
     template='plotly_white'
 )
 
 # Customize the appearance of Vessel 1
-fig_speed_fuel_vessel_1.update_traces(marker=dict(color='blue', opacity=0.6))  # Set color and opacity
+fig_speed_power_vessel_1.update_traces(marker=dict(color='blue', opacity=0.6))  # Set color and opacity
 
 # Show the plot for Vessel 1
-fig_speed_fuel_vessel_1.show()
+fig_speed_power_vessel_1.show()
+
+# Calculate Pearson correlation coefficient for Vessel 2
+vessel_2_data = df[df['Vessel Name'] == 'Vessel 2']
+pearson_corr_vessel_2_power, _ = pearsonr(
+    vessel_2_data['Speed Over Ground (knots)'],
+    vessel_2_data['All Engines Fuel Flow Rate (kg/h)']  # Replace with  actual fuel consumption column name
+)
 
 # Create scatter plot for Vessel 2
-fig_speed_fuel_vessel_2 = px.scatter(
-    df[df['Vessel Name'] == 'Vessel 2'],
+fig_speed_power_vessel_2 = px.scatter(
+    vessel_2_data,
     x='Speed Over Ground (knots)',  # Actual speed column name
-    y='All Engines Fuel Flow Rate (kg/h)',  # Actual fuel consumption column name
-    title='Speed vs. Fuel Consumption - Vessel 2',
+    y='All Engines Fuel Flow Rate (kg/h)',  # Actual power consumption column name
+    title=f'Speed vs. Total Fuel Flow Rate - Vessel 2 (Pearson Correlation: {pearson_corr_vessel_2_power:.2f})',
     labels={
         'Speed Over Ground (knots)': 'Speed Over Ground (knots)',
-        'All Engines Fuel Flow Rate (kg/h)': 'Fuel Consumption (kg/h)'
+        'All Engines Fuel Flow Rate (kg/h)': 'All Engines Fuel Flow Rate (kg/h)'
     },
     template='plotly_white'
 )
 
 # Customize the appearance of Vessel 2
-fig_speed_fuel_vessel_2.update_traces(marker=dict(color='orange', opacity=0.6))  # Set color and opacity
+fig_speed_power_vessel_2.update_traces(marker=dict(color='orange', opacity=0.6))  # Set color and opacity
 
 # Show the plot for Vessel 2
-fig_speed_fuel_vessel_2.show()
+fig_speed_power_vessel_2.show()
+
+# Print Pearson correlation coefficients
+print(f'Pearson correlation for Vessel 1 (All Engines Fuel Flow Rate (kg/h)): {pearson_corr_vessel_1_power:.2f}')
+print(f'Pearson correlation for Vessel 2 (All Engines Fuel Flow Rate (kg/h)): {pearson_corr_vessel_2_power:.2f}')
 
 ```
+
+Based on the scatter plots, a ***positive correlation*** is evident between the speed of the vessels and their total engine fuel flow rate. This relationship aligns with theoretical expectations, as ***increased speed typically necessitates higher fuel consumption to maintain operational efficiency***. For ***Vessel 1***, the Pearson correlation coefficient is calculated to be ***0.88***, indicating a strong association between the two variables; as the speed in knots increases, there is a corresponding increase in fuel expenditure by the engines. Similarly, ***Vessel 2*** exhibits an even stronger correlation, with a Pearson coefficient of ***0.90***, further reinforcing the notion that heightened speed significantly impacts fuel consumption.
+
 
 ```{python}
 #| label: Pearsoncoefficient for vessel1
@@ -960,7 +1139,7 @@ pearson_corr_vessel_1, _ = pearsonr(
     vessel_1_data['All Engines Fuel Flow Rate (kg/h)']
 )
 
-pearson_corr_vessel_1
+#pearson_corr_vessel_1
 
 ```
 
@@ -978,9 +1157,13 @@ pearson_corr_vessel_2, _ = pearsonr(
     vessel_2_data['All Engines Fuel Flow Rate (kg/h)']
 )
 
-pearson_corr_vessel_2
+#pearson_corr_vessel_2
 
 ```
+
+### Speed vs Total Power Consumption (MW)
+
+Now, we aim to explore the ***relationship between speed over ground, measured in knots, and the total power consumption across various components of the vessels, expressed in megawatts***. This analysis will focus specifically on the two vessels operated by Cruise Company, providing insights into how vessel speed influences power demands across different operational systems.
 
 ```{python}
 #| label: Plot11
@@ -992,7 +1175,7 @@ pearson_corr_vessel_2
 vessel_1_data = df[df['Vessel Name'] == 'Vessel 1']
 pearson_corr_vessel_1_power, _ = pearsonr(
     vessel_1_data['Speed Over Ground (knots)'],
-    vessel_1_data['Total Power Consumption (MW)']  # Replace with your actual power consumption column name
+    vessel_1_data['Total Power Consumption (MW)']  # Replace with actual power consumption column name
 )
 
 # Create scatter plot for Vessel 1
@@ -1018,7 +1201,7 @@ fig_speed_power_vessel_1.show()
 vessel_2_data = df[df['Vessel Name'] == 'Vessel 2']
 pearson_corr_vessel_2_power, _ = pearsonr(
     vessel_2_data['Speed Over Ground (knots)'],
-    vessel_2_data['Total Power Consumption (MW)']  # Replace with your actual power consumption column name
+    vessel_2_data['Total Power Consumption (MW)']  # Replace with actual power consumption column name
 )
 
 # Create scatter plot for Vessel 2
@@ -1046,16 +1229,179 @@ print(f'Pearson correlation for Vessel 2 (Power Consumption): {pearson_corr_vess
 
 ```
 
+The analysis of the relationship between speed over ground and total power consumption for the two vessels reveals compelling insights. For ***Vessel 1***, a Pearson correlation coefficient of ***0.90*** indicates a strong positive correlation, suggesting that as the speed of the vessel increases, so does the power consumption across its various operational components. This trend signifies that the vessel’s energy demands are closely tied to its speed, underscoring the implications for fuel efficiency and operational costs.
 
-## Impact of Sea Conditions
+Similarly, ***Vessel 2*** exhibits an even stronger correlation with a Pearson coefficient of ***0.91***. This reinforces the notion that higher speeds lead to increased power consumption, suggesting that Vessel 2’s operational systems are highly responsive to changes in speed. The slight difference in correlation coefficients between the two vessels indicates potential variations in their design or operational efficiencies, which could be pivotal for optimizing performance.
 
-# Comparative Analysis
+### Sea Temperature (Celcius) vs Total Power Consumption (MW)
 
-## Vessel Comparison
+Analyzing the ***interplay between environmental conditions and energy consumption*** is crucial for enhancing operational efficiency in maritime operations. In this context, we aim to examine whether sea temperature affects total power consumption across the two vessels operated by Cruise Company.
 
-## Performance Trends 
+To explore this relationship, we calculated the Pearson correlation coefficients for each vessel, which serve as a quantitative measure of the strength and direction of the relationship between sea temperature (in Celsius) and total power consumption (in megawatts). 
 
-# Key Performance Indicators
+```{python}
+#| label: Plot12
+#| echo: false
+#| message: false
+
+
+# Calculate Pearson correlation coefficient for Vessel 1
+vessel_1_data = df[df['Vessel Name'] == 'Vessel 1']
+pearson_corr_vessel_1_power, _ = pearsonr(
+    vessel_1_data['Sea Temperature (Celsius)'],
+    vessel_1_data['Total Power Consumption (MW)']  # Replace with your power consumption column name
+)
+
+# Create scatter plot for Vessel 1
+fig_speed_power_vessel_1 = px.scatter(
+    vessel_1_data,
+    x='Sea Temperature (Celsius)',  # Actual speed column name
+    y='Total Power Consumption (MW)',  # Actual power consumption column name
+    title=f'Sea Temperature vs. Total Power Consumption - Vessel 1 (Pearson Correlation: {pearson_corr_vessel_1_power:.2f})',
+    labels={
+        'Sea Temperature (Celsius)': 'Sea Temperature (Celsius)',
+        'Total Power Consumption (MW)': 'Total Power Consumption (MW)'
+    },
+    template='plotly_white'
+)
+
+# Customize the appearance of Vessel 1
+fig_speed_power_vessel_1.update_traces(marker=dict(color='blue', opacity=0.6))  # Set color and opacity
+
+# Show the plot for Vessel 1
+fig_speed_power_vessel_1.show()
+
+# Calculate Pearson correlation coefficient for Vessel 2
+vessel_2_data = df[df['Vessel Name'] == 'Vessel 2']
+pearson_corr_vessel_2_power, _ = pearsonr(
+    vessel_2_data['Sea Temperature (Celsius)'],
+    vessel_2_data['Total Power Consumption (MW)']  # Replace with actual power consumption column name
+)
+
+# Create scatter plot for Vessel 2
+fig_speed_power_vessel_2 = px.scatter(
+    vessel_2_data,
+    x='Sea Temperature (Celsius)',  # Actual speed column name
+    y='Total Power Consumption (MW)',  # Actual power consumption column name
+    title=f'Sea Temperature vs. Total Power Consumption - Vessel 2 (Pearson Correlation: {pearson_corr_vessel_2_power:.2f})',
+    labels={
+        'Sea Temperature (Celsius)': 'Sea Temperature (Celsius)',
+        'Total Power Consumption (MW)': 'Total Power Consumption (MW)'
+    },
+    template='plotly_white'
+)
+
+# Customize the appearance of Vessel 2
+fig_speed_power_vessel_2.update_traces(marker=dict(color='orange', opacity=0.6))  # Set color and opacity
+
+# Show the plot for Vessel 2
+fig_speed_power_vessel_2.show()
+
+# Print Pearson correlation coefficients
+print(f'Pearson correlation for Vessel 1 (Power Consumption): {pearson_corr_vessel_1_power:.2f}')
+print(f'Pearson correlation for Vessel 2 (Power Consumption): {pearson_corr_vessel_2_power:.2f}')
+
+```
+
+The exploration of the relationship between sea temperature and total power consumption for the two vessels presents intriguing insights. For ***Vessel 1***, the Pearson correlation coefficient of ***0.10*** indicates a negligible positive correlation between sea temperature and power consumption. This suggests that variations in sea temperature have little to no impact on the vessel’s energy demands, highlighting a degree of operational consistency regardless of external thermal conditions.
+
+In contrast, ***Vessel 2*** exhibits a negative Pearson correlation coefficient of ***-0.25***. This negative relationship implies that as sea temperature increases, the power consumption of Vessel 2 tends to decrease. Such an outcome may indicate the vessel's reliance on cooling systems that become more efficient in warmer waters or that certain operational parameters adapt to the thermal environment, resulting in lower energy usage.
+
+### Sea Temperature (Celcius) vs All Eninges Fuel Flow Rate (kg/h)
+
+```{python}
+#| label: Plot13
+#| echo: false
+#| message: false
+
+# Calculate Pearson correlation coefficient for Vessel 1
+vessel_1_data = df[df['Vessel Name'] == 'Vessel 1']
+pearson_corr_vessel_1_power, _ = pearsonr(
+    vessel_1_data['Sea Temperature (Celsius)'],
+    vessel_1_data['All Engines Fuel Flow Rate (kg/h)']  # Replace with actual fuel consumption column name
+)
+
+# Create scatter plot for Vessel 1
+fig_speed_power_vessel_1 = px.scatter(
+    vessel_1_data,
+    x='Sea Temperature (Celsius)',  # Actual speed column name
+    y='All Engines Fuel Flow Rate (kg/h)',  # Actual All Engines Fuel Flow Rate (kg/h)
+    title=f'Sea Temperature vs. Total Fuel Flow Rate - Vessel 1 (Pearson Correlation: {pearson_corr_vessel_1_power:.2f})',
+    labels={
+        'Sea Temperature (Celsius)': 'Sea Temperature (Celsius)',
+        'All Engines Fuel Flow Rate (kg/h)': 'All Engines Fuel Flow Rate (kg/h)'
+    },
+    template='plotly_white'
+)
+
+# Customize the appearance of Vessel 1
+fig_speed_power_vessel_1.update_traces(marker=dict(color='blue', opacity=0.6))  # Set color and opacity
+
+# Show the plot for Vessel 1
+fig_speed_power_vessel_1.show()
+
+# Calculate Pearson correlation coefficient for Vessel 2
+vessel_2_data = df[df['Vessel Name'] == 'Vessel 2']
+pearson_corr_vessel_2_power, _ = pearsonr(
+    vessel_2_data['Sea Temperature (Celsius)'],
+    vessel_2_data['All Engines Fuel Flow Rate (kg/h)']  # Replace with actual fuel consumption column name
+)
+
+# Create scatter plot for Vessel 2
+fig_speed_power_vessel_2 = px.scatter(
+    vessel_2_data,
+    x='Sea Temperature (Celsius)',  # Actual speed column name
+    y='All Engines Fuel Flow Rate (kg/h)',  # Actual power consumption column name
+    title=f'Sea Temperature vs. Total Fuel Flow Rate - Vessel 2 (Pearson Correlation: {pearson_corr_vessel_2_power:.2f})',
+    labels={
+        'Sea Temperature (Celsius)': 'Sea Temperature (Celsius)',
+        'All Engines Fuel Flow Rate (kg/h)': 'All Engines Fuel Flow Rate (kg/h)'
+    },
+    template='plotly_white'
+)
+
+# Customize the appearance of Vessel 2
+fig_speed_power_vessel_2.update_traces(marker=dict(color='orange', opacity=0.6))  # Set color and opacity
+
+# Show the plot for Vessel 2
+fig_speed_power_vessel_2.show()
+
+# Print Pearson correlation coefficients
+print(f'Pearson correlation for Vessel 1 (All Engines Fuel Flow Rate (kg/h)): {pearson_corr_vessel_1_power:.2f}')
+print(f'Pearson correlation for Vessel 2 (All Engines Fuel Flow Rate (kg/h)): {pearson_corr_vessel_2_power:.2f}')
+
+```
+
+For ***Vessel 1***, the correlation coefficient is ***0.10***, indicating a negligible positive relationship between sea temperature and fuel flow rate. This suggests that changes in sea temperature have little to no effect on the fuel consumption of Vessel 1's engines, indicating a stable operational profile that is largely insulated from variations in thermal conditions.
+
+In contrast, ***Vessel 2*** exhibits a Pearson correlation coefficient of ***-0.26***, suggesting a moderate negative correlation. This indicates that as sea temperature increases, the all engines fuel flow rate for Vessel 2 tends to decrease. This relationship may imply potential operational efficiencies, such as reduced engine load requirements or more efficient fuel consumption patterns in warmer waters.
+
+These insights highlight the distinct operational dynamics of each vessel in relation to environmental factors. Vessel 1 shows a consistent fuel flow rate unaffected by sea temperature, suggesting that its engines operate independently of thermal variations. Conversely, Vessel 2 may take advantage of warmer sea temperatures to optimize fuel efficiency, thereby reducing overall fuel consumption.
+
+
+# Key Performance Indicators (KPIs)
+
+***Key Performance Indicators (KPIs)*** serve as vital benchmarks for assessing the operational efficiency and performance of cruise vessels. These metrics provide valuable insights into various aspects of vessel operation, enabling stakeholders to identify areas for improvement, optimize resource utilization, and enhance overall sustainability. By analyzing KPIs, we can make informed decisions regarding fuel consumption, power generation, and operational practices, ultimately leading to more efficient maritime operations.
+
+In this analysis, KPIs have been calculated to evaluate the performance of the cruise vessels under consideration. The KPIs include:
+
+## 1. Energy Efficiency Ratio (EER)
+- **Calculation**: The EER is calculated by dividing the total power produced (in megawatts) by the total fuel consumed (in kilograms per hour).
+- **Purpose**: This ratio indicates how efficiently the vessels convert fuel into energy. A higher EER suggests that the vessel is using fuel more effectively to produce power.
+
+## 2. Operational Efficiency (MW/hour)
+- **Calculation**: This metric is determined by dividing the total power produced by the operational hours (the total time the vessel was active).
+- **Purpose**: Operational efficiency reflects how much power is generated per hour of operation, allowing stakeholders to understand how effectively the vessel is performing during its operational time.
+
+## 3. Fuel Efficiency (kg/MW)
+- **Calculation**: Fuel efficiency is calculated by dividing the total fuel consumed (in kilograms per hour) by the total power produced (in megawatts).
+- **Purpose**: This KPI measures the amount of fuel required to produce one megawatt of power. A lower value indicates better fuel efficiency, meaning the vessel is consuming less fuel to generate the same amount of energy.
+
+## 4. Average Speed (knots)
+- **Calculation**: Average speed is determined by dividing the total distance traveled  by the operational hours.
+- **Purpose**: This metric provides insights into the vessel’s performance in terms of speed during its operational period, allowing for comparisons with expected travel times and operational planning.
+
+By calculating these KPIs, we can gain a comprehensive understanding of how effectively each vessel is utilizing fuel, generating power, and operating over time. This information is essential for optimizing vessel performance, reducing operational costs, and enhancing sustainability in maritime operations. The analysis of these KPIs not only aids in operational decision-making but also contributes to the broader goals of environmental responsibility and economic efficiency in the maritime industry.
 
 ```{python}
 #| label: kpi
@@ -1063,17 +1409,17 @@ print(f'Pearson correlation for Vessel 2 (Power Consumption): {pearson_corr_vess
 #| message: false
 #| include: false
 
-# Step 1: Create a new DataFrame
+# Create a new DataFrame
 df_new = df.copy()
 
 # Convert time columns to datetime
 df_new['Start Time'] = pd.to_datetime(df_new['Start Time'])
 df_new['End Time'] = pd.to_datetime(df_new['End Time'])
 
-# Step 2: Calculate Operational Hours
+# Calculate Operational Hours
 df_new['Operational Hours'] = (df_new['End Time'] - df_new['Start Time']).dt.total_seconds() / 3600  # Convert seconds to hours
 
-# Step 3: Calculate Total Power Produced (MW)
+# Calculate Total Power Produced (MW)
 df_new['Total Power Produced (MW)'] = (
     df_new['Power Galley 1 (MW)'] +
     df_new['Power Galley 2 (MW)'] +
@@ -1096,19 +1442,19 @@ df_new['Total Power Produced (MW)'] = (
     df_new['Stern Thruster 2 Power (MW)']
 )
 
-# Step 4: Calculate Total Fuel Consumed (kg/h)
+# Calculate Total Fuel Consumed (kg/h)
 df_new['Total Fuel Consumed (kg/h)'] = (
     df_new['Main Engine 1 Fuel Flow Rate (kg/h)'] +
     df_new['Main Engine 2 Fuel Flow Rate (kg/h)'] +
     df_new['Main Engine 3 Fuel Flow Rate (kg/h)'] +
     df_new['Main Engine 4 Fuel Flow Rate (kg/h)'] +
-    df_new['All Boiler Fuel Flow Rate (L/h)']  # Convert to kg if necessary
+    df_new['All Boiler Fuel Flow Rate (L/h)']  
 )
 
-# Step 5: Calculate Total Distance Traveled (nautical miles)
+# Calculate Total Distance Traveled (nautical miles)
 df_new['Total Distance Traveled (nautical miles)'] = df_new['Speed Over Ground (knots)'] * df_new['Operational Hours']
 
-# Step 6: Calculate KPIs
+# Calculate KPIs
 kpi_data = df_new.groupby('Vessel Name').agg({
     'Total Power Produced (MW)': 'sum',
     'Total Fuel Consumed (kg/h)': 'sum',
@@ -1132,33 +1478,32 @@ print(kpi_data[['Vessel Name', 'Energy Efficiency Ratio (EER)', 'Operational Eff
 #| echo: false
 #| message: false
 
-
 # Set the aesthetic style of the plots
 sns.set(style="whitegrid")
 
-# Step 1: Create a figure to hold multiple plots
+# Create a figure to hold multiple plots
 fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(15, 10))
 fig.suptitle('Cruise Ship KPIs Analysis', fontsize=16)
 
-# Step 2: Plot Energy Efficiency Ratio (EER)
+# Plot Energy Efficiency Ratio (EER)
 sns.barplot(x='Vessel Name', y='Energy Efficiency Ratio (EER)', data=kpi_data, ax=axes[0, 0], palette='viridis')
 axes[0, 0].set_title('Energy Efficiency Ratio (EER)')
 axes[0, 0].set_ylabel('EER (MW/kg)')
 axes[0, 0].set_xticklabels(axes[0, 0].get_xticklabels(), rotation=45)
 
-# Step 3: Plot Operational Efficiency
+# Plot Operational Efficiency
 sns.barplot(x='Vessel Name', y='Operational Efficiency (MW/hour)', data=kpi_data, ax=axes[0, 1], palette='mako')
 axes[0, 1].set_title('Operational Efficiency (MW/hour)')
 axes[0, 1].set_ylabel('Operational Efficiency (MW/hour)')
 axes[0, 1].set_xticklabels(axes[0, 1].get_xticklabels(), rotation=45)
 
-# Step 4: Plot Fuel Efficiency
+# Plot Fuel Efficiency
 sns.barplot(x='Vessel Name', y='Fuel Efficiency (kg/MW)', data=kpi_data, ax=axes[1, 0], palette='plasma')
 axes[1, 0].set_title('Fuel Efficiency (kg/MW)')
 axes[1, 0].set_ylabel('Fuel Efficiency (kg/MW)')
 axes[1, 0].set_xticklabels(axes[1, 0].get_xticklabels(), rotation=45)
 
-# Step 5: Plot Average Speed
+# Plot Average Speed
 sns.barplot(x='Vessel Name', y='Average Speed (knots)', data=kpi_data, ax=axes[1, 1], palette='cividis')
 axes[1, 1].set_title('Average Speed (knots)')
 axes[1, 1].set_ylabel('Average Speed (knots)')
@@ -1168,20 +1513,86 @@ axes[1, 1].set_xticklabels(axes[1, 1].get_xticklabels(), rotation=45)
 plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Adjust title position
 plt.show()
 
-
-
 ```
 
 
+## KPI Results
+
+### 1. Energy Efficiency Ratio (EER)
+- **Vessel 1**: Approximately **0.013 MW/kg**
+- **Vessel 2**: Approximately **0.011 MW/kg**
+
+**Explanation:**
+The Energy Efficiency Ratio (EER) measures how effectively a vessel converts fuel into energy. It is calculated by dividing the total power produced (in megawatts) by the total fuel consumed (in kilograms). A higher EER indicates that the vessel is utilizing its fuel more efficiently, producing more energy per unit of fuel consumed. 
+
+In this case, Vessel 1 has a higher EER than Vessel 2, suggesting that Vessel 1 is more efficient in converting fuel into energy. This efficiency is crucial for minimizing operational costs and reducing the environmental impact associated with fuel consumption. 
+
+**Insights from Bar Charts:**
+Based on the bar charts, we can see that Vessel 1 consistently outperforms Vessel 2 in terms of EER. This visual representation reinforces the understanding that Vessel 1 is operating at a more optimal level concerning fuel usage, which could lead to significant savings over time, particularly on longer voyages where fuel costs are a major factor.
+
+### 2. Operational Efficiency
+- **Vessel 1**: Approximately **400 MWh/hour**
+- **Vessel 2**: Approximately **340 MWh/hour**
+
+**Explanation:**
+Operational Efficiency measures the amount of power generated by the vessel per hour of operation, expressed in megawatt-hours per hour (MWh/hour). This KPI reflects how effectively the vessel utilizes its systems and resources to produce power.
+
+For these vessels, Vessel 1 shows a higher operational efficiency compared to Vessel 2. This indicates that Vessel 1 is likely operating its engines and systems more effectively, possibly leading to reduced operational costs and improved performance during voyages.
+
+**Insights from Bar Charts:**
+From the bar charts, it is evident that Vessel 1 maintains a significantly higher operational efficiency compared to Vessel 2. This visual comparison not only highlights the performance gap between the two vessels but also underscores the potential for Vessel 2 to enhance its operational practices to close this gap. Improved operational efficiency can directly translate to increased profitability and sustainability in operations.
+
+### 3. Fuel Efficiency
+- **Vessel 1**: Approximately **78 kg/MWh**
+- **Vessel 2**: Approximately **82 kg/MWh**
+
+**Explanation:**
+Fuel Efficiency quantifies the amount of fuel consumed to produce one megawatt of power, expressed in kilograms per megawatt-hour (kg/MWh). This KPI is critical for understanding how much fuel is required for energy generation, helping operators manage fuel costs and emissions.
+
+In this scenario, Vessel 1 has a lower fuel consumption rate per megawatt produced than Vessel 2, indicating better fuel efficiency. This suggests that Vessel 1 utilizes its fuel resources more effectively, potentially leading to lower operational costs and reduced environmental impact.
+
+**Insights from Bar Charts:**
+The bar charts illustrate that Vessel 1 achieves a more favorable fuel efficiency compared to Vessel 2. This visual data reinforces the understanding that Vessel 1 is not only conserving fuel but also potentially reducing its carbon footprint. The difference in fuel efficiency can be pivotal in operational strategy, allowing for more competitive pricing or increased investment in sustainable technologies.
+
+### 4. Average Speed
+- **Vessel 1**: Approximately **10.5 knots**
+- **Vessel 2**: Approximately **8 knots**
+
+**Explanation:**
+Average Speed is the measure of how fast a vessel travels during its operational period, expressed in knots (nautical miles per hour). This KPI is essential for scheduling, fuel consumption analysis, and overall voyage planning.
+
+The average speed of Vessel 1 is significantly higher than that of Vessel 2. A higher average speed can indicate that Vessel 1 is better suited for longer routes or faster transit times, which may be advantageous in terms of operational efficiency and customer satisfaction.
+
+**Insights from Bar Charts:**
+Based on the bar charts, it is clear that Vessel 1 not only surpasses Vessel 2 in average speed but also may attract a different clientele interested in faster travel options. The higher speed could also lead to enhanced operational schedules, allowing for more voyages and higher overall revenue generation.
+
+## Summary
+These KPI results provide critical insights into the performance of the cruise vessels, highlighting their strengths and potential areas for improvement. By monitoring these indicators, the Cruise Company can enhance fuel efficiency, optimize operational practices, and ultimately contribute to more sustainable maritime operations. Implementing strategies to improve these KPIs can lead to significant cost savings and a reduced environmental footprint, aligning with industry goals for sustainability and efficiency.
+
+# Conclusion
+
+In conclusion, the comparative analysis of the cruise vessels highlights critical insights into operational efficiency and fuel management within the maritime industry. The findings underscore the importance of adopting effective strategies to enhance Key Performance Indicators (KPIs), particularly in energy efficiency and operational practices. The superior performance of one vessel in terms of fuel consumption, power generation, and speed not only translates to reduced operational costs but also aligns with the broader goals of sustainability and environmental responsibility. By leveraging these insights, the Cruise Company can implement targeted improvements to optimize vessel performance, ultimately leading to enhanced profitability and a reduced ecological footprint. Continued monitoring and analysis of KPIs will be essential for maintaining competitive advantage and addressing the challenges posed by fluctuating fuel prices and regulatory pressures. Through these efforts, the company can reinforce its commitment to sustainability while ensuring efficient maritime operations.
+
+# Limitation and Outlook
+
+## Limitations
+
+This analysis is subject to several limitations that may impact the comprehensiveness of the findings. Primarily, the lack of historical data over the last ten years restricts our ability to assess the longitudinal performance of the cruise vessels. Access to such data would provide insights into trends in Key Performance Indicators (KPIs), revealing how the company has evolved in its fuel and energy consumption over time. Understanding these trends would allow for a more nuanced analysis of the effectiveness of operational strategies implemented by the Cruise Company.
+
+Additionally, the absence of data on carbon emissions poses a significant limitation. Including this metric would enhance the analysis by offering a clearer picture of the vessels’ environmental impact and sustainability efforts. Analyzing carbon emissions alongside fuel consumption could provide valuable insights into how effectively the company is minimizing its ecological footprint.
+
+## Outlook
+
+Future research should prioritize the collection and integration of historical data to facilitate a more in-depth examination of the company's performance trends. This would enable stakeholders to track progress and identify areas requiring improvement over time. Moreover, incorporating additional metrics, such as carbon emissions and operational costs, would contribute to a holistic understanding of the company’s sustainability efforts. By addressing these limitations, the Cruise Company can further refine its strategies, ensuring continuous improvement in operational efficiency and environmental responsibility.
 
 # Reference List 
 
 Azur, M. J., Stuart, E. A., Frangakis, C., & Leaf, P. J. (2011). Multiple imputation by chained equations: what is
 it and how does it work? International journal of methods in psychiatric research, 20(1), 40–49.
-https://doi.org/10.1002/mpr.329
+[https://doi.org/10.1002/mpr.329](https://doi.org/10.1002/mpr.329){style="color: darkgray;"}
 
-B.V, D. C., Directorate-General for Maritime Affairs and Fisheries                                          (European Commission), & Consulting, R. M. (1970, January 1). Good practices for sustainable cruise tourism. Publications Office of the EU. https://op.europa.eu/en/publication-detail/-/publication/664f158c-909c-11ed-b508-01aa75ed71a1 
+B.V, D. C., Directorate-General for Maritime Affairs and Fisheries                                          (European Commission), & Consulting, R. M. (1970, January 1). Good practices for sustainable cruise tourism. Publications Office of the EU. [https://op.europa.eu/en/publication-detail/-/publication/664f158c-909c-11ed-b508-01aa75ed71a1](https://op.europa.eu/en/publication-detail/-/publication/664f158c-909c-11ed-b508-01aa75ed71a1){style="color: darkgray;"} 
 
 Makaba, T. & Dogo, E. (2019). A Comparison of Strategies for Missing Values in Data on Machine Learning
 Classification Algorithms. International Multidisciplinary Information Technology and Engineering
-Conference (IMITEC), Vanderbijlpark, South Africa, pp. 1-7. https://ieeexplore.ieee.org/document/9015889
+Conference (IMITEC), Vanderbijlpark, South Africa, pp. 1-7. [https://ieeexplore.ieee.org/document/9015889](https://ieeexplore.ieee.org/document/9015889){style="color: darkgray;"}
