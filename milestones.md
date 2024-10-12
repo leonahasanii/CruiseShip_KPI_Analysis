@@ -2,7 +2,7 @@
 
 ## Repository Setup
 - [x] Create a public GitHub repository.
-- [ ] Add a clear project name and description in the repository.
+- [x] Add a clear project name and description in the repository.
 
 ## Data Exploration and Cleaning
 - [x] Load and review the dataset.
@@ -22,18 +22,18 @@
 
 
 ## Document Insights and Narrative Development
-- [ ] Develop a narrative based on EDA findings and KPI analysis.
-- [ ] Explain performance trends and efficiency levels for each vessel.
-- [ ] Discuss any significant operational differences between Vessel 1 and Vessel 2.
+- [x] Develop a narrative based on EDA findings and KPI analysis.
+- [x] Explain performance trends and efficiency levels for each vessel.
+- [x] Discuss any significant operational differences between Vessel 1 and Vessel 2.
 
 ## Repository Documentation
-- [ ] Create a `README.md` file with:
-  - [ ] Project overview.
-  - [ ] Setup instructions (e.g., required libraries, how to run the code).
-  - [ ] Explanation of key components (e.g., data sources, scripts, output).
-- [ ] Write clear comments and docstrings within the code.
-- [ ] Ensure all dependencies are listed in a `requirements.txt` file.
+- [x] Create a `README.md` file with:
+  - [x] Project overview.
+  - [x] Setup instructions (e.g., required libraries, how to run the code).
+  - [x] Explanation of key components (e.g., data sources, scripts, output).
+- [x] Write clear comments and docstrings within the code.
+- [x] Ensure all dependencies are listed in a `requirements.txt` file.
 
 ## Final Review and Submission
-- [ ] Ensure code and documentation can be run independently on a standard laptop.
-- [ ] Double-check that the repository is well-organized and easy to navigate.
+- [x] Ensure code and documentation can be run independently on a standard laptop.
+- [x] Double-check that the repository is well-organized and easy to navigate.
